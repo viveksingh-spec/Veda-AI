@@ -1,0 +1,44 @@
+---
+description: Project rules for "Veda" healthcare chatbot to ensure consistent development across frontend, backend, and database.
+globs:
+  - "**/*.js"
+  - "**/*.jsx"
+  - "**/*.py"
+  - "**/*.md"
+alwaysApply: true
+---
+
+# Veda Healthcare Chatbot – Project Rules
+
+## General
+- Use **JavaScript** only (no TypeScript).
+- Use **React.js** for frontend, **FastAPI** for backend, and **MongoDB** for database.
+- Follow modular, clean, and well-commented code practices.
+
+## Development Flow
+- first Execute Phase F (F00–F09) **frontend-only** exactly as defined in `plan.md`.
+- Until Phase F is completed,  Do NOT modify: backend/** , docker/**, docker-compose.yml, .env (except adding FRONTEND vars in .env.example).
+- Use mocks: VITE_USE_MOCK_API=true, services/mockApi.js must be used for data; do not call a live backend.
+- WebSocket: use mocked streaming in hooks/useWebSocket.js until `Phase F` is completed.
+- Always align with `plan.md` for overall structure.
+
+## UI
+- Similar layout to ChatGPT, but with a **light gradient background** (no dark theme).
+- Ensure that UI colors and styles remain consistent across the entire app.
+- Must be fully **responsive** for desktop and mobile.
+- Use Tailwind CSS for styling.
+
+## Features
+- Login/Signup as first page, with **Google Login integration**.
+- Chatbot supports:
+  - Text input
+  - Image uploads
+  - Voice input
+- Use **own fine-tuned LLM** (no OpenAI API).
+
+## File & Project Organization
+- Keep each section/component in its own file for readability.
+- Store documentation in `/docs` (`roadmap.md`, `plan.md`).
+
+
+
