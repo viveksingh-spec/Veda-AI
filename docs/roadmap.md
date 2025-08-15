@@ -22,7 +22,6 @@ Build a ChatGPT-like healthcare chatbot web app with:
 - Containerization: Docker + docker-compose
 - Testing: Jest + React Testing Library (frontend), pytest + httpx/pytest-asyncio (backend)
 
-
 ---
 
 ## 1️⃣ File & Folder Structure
@@ -36,7 +35,7 @@ veda/
 │  └─ frontend.Dockerfile
 ├─ README.md
 ├─ frontend/
-│  ├─ package.json       
+│  ├─ package.json
 │  ├─ vite.config.js
 │  ├─ tailwind.config.cjs
 │  ├─ postcss.config.cjs
@@ -117,6 +116,7 @@ veda/
    └─ Dockerfile
 
 ```
+
 ---
 
 ## 2️⃣ Milestones & Step-by-Step Tasks
@@ -164,13 +164,11 @@ veda/
 - **Message:** conversation_id, sender, content, status, metadata
 - Create Pydantic schemas for request/response validation.
 - Create CRUD endpoints for conversations & messages
-**Indexes:**
+  **Indexes:**
 
 - `Conversation.user_id`
 - `Message.conversation_id`
 - `User.email`
-
-
 
 ---
 
@@ -208,10 +206,9 @@ veda/
 - POST `/api/conversations/{id}/messages` → enqueue user message
 - WebSocket `/ws/conversations/{id}?token=<JWT>`
 - Stream LLM tokens:  
-        { "type": "chunk", "messageId": "...", "data": "..." }
-        { "type": "done", "message": { "id": "...", "content": "..." } }
-        { "type": "error", "error": "..." }
-
+   { "type": "chunk", "messageId": "...", "data": "..." }
+  { "type": "done", "message": { "id": "...", "content": "..." } }
+  { "type": "error", "error": "..." }
 
 **Frontend:**
 
@@ -240,10 +237,10 @@ veda/
 
 ### Milestone 8 — Admin & Observability
 
-- `/api/admin/stats` endpoint (protected role):  
-- total users  
-- active users  
-- conversations/day  
+- `/api/admin/stats` endpoint (protected role):
+- total users
+- active users
+- conversations/day
 - token usage
 - Structured JSON logs
 - Optional `/metrics` endpoint
@@ -282,7 +279,7 @@ veda/
 ## 3️⃣ UX & Healthcare Safety Defaults
 
 - Footer in every assistant message:  
-"This information is for educational purposes only and is not a substitute for professional medical advice. If you are experiencing a medical emergency, contact local emergency services."
+  "This information is for educational purposes only and is not a substitute for professional medical advice. If you are experiencing a medical emergency, contact local emergency services."
 - Emergency modal triggers for critical keywords.
 - Consistent mobile + desktop responsive UI.
 - Accessible components (buttons, forms, modals) with ARIA attributes.
