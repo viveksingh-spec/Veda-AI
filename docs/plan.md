@@ -70,7 +70,8 @@ veda/
 │  ├─ tailwind.config.cjs
 │  ├─ postcss.config.cjs
 │  ├─ public/
-│  │  └─ index.html
+│  │  └─ vite.svg
+|  ├─ index.html
 │  └─ src/
 │     ├─ main.jsx
 │     ├─ App.jsx
