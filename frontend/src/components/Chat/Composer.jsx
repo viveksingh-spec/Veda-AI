@@ -1,0 +1,74 @@
+import { useCallback, useRef, useState } from 'react';
+
+export default function Composer({ onSend }) {
+  const [value, setValue] = useState('');
+  const textareaRef = useRef(null);
+
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        submit();
+      }
+    },
+    [value]
+  );
+
+  const submit = () => {
+    const trimmed = value.trim();
+    if (!trimmed) return;
+    onSend?.(trimmed);
+    setValue('');
+    textareaRef.current?.focus();
+  };
+
+  return (
+    <div className="sticky bottom-0 inset-x-0">
+      <div className="px-4 sm:px-6">
+        <div className="max-w-2xl mx-auto w-full pb-4 sm:pb-6">
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm p-2">
+            <textarea
+              ref={textareaRef}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Message Veda..."
+              rows={1}
+              className="w-full resize-none bg-transparent outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 px-3 py-2"
+            />
+            <div className="flex items-center justify-between px-2">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  aria-label="Attach image"
+                  className="inline-flex items-center justify-center h-8 w-8 rounded-md text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  📎
+                </button>
+                <button
+                  type="button"
+                  aria-label="Voice input"
+                  className="inline-flex items-center justify-center h-8 w-8 rounded-md text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  🎤
+                </button>
+              </div>
+              <button
+                type="button"
+                onClick={submit}
+                className="inline-flex items-center gap-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3 py-1.5"
+              >
+                Send
+              </button>
+            </div>
+          </div>
+          <p className="text-center text-xs text-slate-500 dark:text-slate-400 mt-2">
+            Veda can make mistakes. Consider checking important information.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
