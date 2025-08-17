@@ -30,7 +30,7 @@ export default function Composer({ onSend, onAttachImage, onStartVoice, onStopVo
         <div className="max-w-2xl mx-auto w-full pb-4 sm:pb-6">
           <form
             className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm p-2"
-           onSubmit={(e) => {
+            onSubmit={(e) => {
               e.preventDefault();
               console.log('Composer submit handler called');
               submit();
@@ -43,7 +43,7 @@ export default function Composer({ onSend, onAttachImage, onStartVoice, onStopVo
               onKeyDown={handleKeyDown}
               placeholder="Message Veda..."
               rows={1}
-              className="w-full resize-none bg-transparent outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 px-3 py-2"
+              className="w-full resize-none bg-transparent outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 px-3 py-2 focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-xl"
             />
             <div className="flex items-center justify-between px-2">
               <div className="flex items-center gap-2">
@@ -52,8 +52,8 @@ export default function Composer({ onSend, onAttachImage, onStartVoice, onStopVo
               </div>
               <button
                 type="submit"
-                
-                className="inline-flex items-center gap-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3 py-1.5"
+                className="inline-flex items-center gap-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3 py-1.5 outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
+                aria-label="Send message"
               >
                 Send
               </button>

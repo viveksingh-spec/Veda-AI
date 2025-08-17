@@ -10,12 +10,12 @@ export default function Topbar({ onMenuClick }) {
 
         {/* Right: User avatar + Menu toggle */}
         <div className="ml-auto flex items-center gap-2">
-          <button aria-label="User" className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <button aria-label="User" className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 transition-colors">
             <span className="text-sm">😊</span>
           </button>
           <button
             aria-label="Toggle sidebar"
-            className="inline-flex items-center justify-center h-9 w-9 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700"
+            className="inline-flex items-center justify-center h-9 w-9 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 transition-colors"
             onClick={onMenuClick}
           >
             <span className="text-xl">≡</span>
