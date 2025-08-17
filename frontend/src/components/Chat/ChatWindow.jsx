@@ -7,20 +7,26 @@ export default function ChatWindow({ conversationId, reloadToken, isTyping = fal
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
+  const bottomAnchorRef = useRef(null);
+  const lastConversationIdRef = useRef(null);
 
   useEffect(() => {
     let isCancelled = false;
+    const isSwitch = conversationId !== lastConversationIdRef.current;
     async function load() {
       if (!conversationId) {
         setMessages([]);
+        setLoading(false);
+        lastConversationIdRef.current = null;
         return;
       }
-      setLoading(true);
+      if (isSwitch) setLoading(true);
       try {
         const list = await listMessages(conversationId);
         if (!isCancelled) setMessages(list);
       } finally {
-        if (!isCancelled) setLoading(false);
+        if (!isCancelled && isSwitch) setLoading(false);
+        lastConversationIdRef.current = conversationId;
       }
     }
     load();
@@ -31,9 +37,10 @@ export default function ChatWindow({ conversationId, reloadToken, isTyping = fal
 
   useEffect(() => {
     // Auto-scroll to bottom when messages change or typing state toggles
-    const el = scrollRef.current;
+    const el = bottomAnchorRef.current;
     if (!el) return;
-    el.scrollTop = el.scrollHeight;
+    // smooth scroll only when not first load
+    el.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [messages, isTyping]);
 
   return (
@@ -58,6 +65,7 @@ export default function ChatWindow({ conversationId, reloadToken, isTyping = fal
             ))
           )}
           {isTyping ? <TypingIndicator /> : null}
+          <div ref={bottomAnchorRef} />
         </div>
       </div>
     </div>

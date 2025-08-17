@@ -11,7 +11,7 @@ export default function ChatPage() {
   const [conversations, setConversations] = useState([]);
   const [activeConversationId, setActiveConversationId] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
-  const [reloadToken, setReloadToken] = useState(0);
+  const [reloadToken, setReloadToken] = useState(0); // triggers message list refresh without remounting
 
   useEffect(() => {
     async function load() {
@@ -41,13 +41,13 @@ export default function ChatPage() {
   const handleSend = async (text) => {
     if (!activeConversationId) return;
     await createMessage({ conversationId: activeConversationId, role: 'user', content: text });
-    setReloadToken((n) => n + 1);
+    setReloadToken((n) => n + 1); // lightweight refresh
     setIsTyping(true);
     // mock assistant reply
     setTimeout(async () => {
       await createMessage({ conversationId: activeConversationId, role: 'assistant', content: `You said: ${text}` });
       setIsTyping(false);
-      setReloadToken((n) => n + 1);
+      setReloadToken((n) => n + 1); // lightweight refresh
     }, 700);
   };
 
