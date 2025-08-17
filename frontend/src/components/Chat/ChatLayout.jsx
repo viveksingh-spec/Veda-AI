@@ -3,7 +3,7 @@ import Topbar from '../Layout/Topbar.jsx';
 import Sidebar from '../Layout/Sidebar.jsx';
 import { Outlet } from 'react-router-dom';
 
-export default function ChatLayout() {
+export default function ChatLayout({ sidebarContent, children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const openSidebar = () => setIsSidebarOpen(true);
@@ -27,7 +27,7 @@ export default function ChatLayout() {
           
       {/* Sidebar with frosted glass effect */}
         <div className="backdrop-blur-md bg-white/40 dark:bg-slate-800/30 border-r border-white/20 dark:border-slate-700/30 overflow-y-auto h-full">
-           <Sidebar open={isSidebarOpen} onClose={closeSidebar} />
+           <Sidebar open={isSidebarOpen} onClose={closeSidebar}>{sidebarContent}</Sidebar>
     </div> 
 
 
@@ -53,7 +53,7 @@ export default function ChatLayout() {
                 <span>Toggle sidebar</span>
               </button> 
             </div>
-            <Outlet />
+            {children ? children : <Outlet />}
           </main>
         </div>
       </div>

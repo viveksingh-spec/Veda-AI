@@ -5,7 +5,6 @@ import Register from './pages/Register.jsx';
 import ChatPage from './pages/ChatPage.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 // import AuthLayout from './components/Layout/AuthLayout1.jsx';
-import ChatLayout from './components/Chat/ChatLayout.jsx';
 
 function App() {
   return (
@@ -20,12 +19,10 @@ function App() {
             <Register />
           // </AuthLayout>
         } />
-      <Route element={<ChatLayout />}>
-        <Route element={<ProtectedRoute />}>
-          <Route path="/chat" element={<ChatPage />} />
-        </Route>
-        <Route path="/" element={<Navigate to="/chat" replace />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/chat" element={<ChatPage />} />
       </Route>
+      <Route path="/" element={<Navigate to="/chat" replace />} />
     </Routes>
   );
 }

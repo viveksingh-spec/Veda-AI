@@ -1,6 +1,8 @@
 import { useCallback, useRef, useState } from 'react';
+import ImageUploader from './ImageUploader.jsx';
+import VoiceInput from './VoiceInput.jsx';
 
-export default function Composer({ onSend }) {
+export default function Composer({ onSend, onAttachImage, onStartVoice, onStopVoice }) {
   const [value, setValue] = useState('');
   const textareaRef = useRef(null);
 
@@ -38,20 +40,8 @@ export default function Composer({ onSend }) {
             />
             <div className="flex items-center justify-between px-2">
               <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  aria-label="Attach image"
-                  className="inline-flex items-center justify-center h-8 w-8 rounded-md text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
-                >
-                  📎
-                </button>
-                <button
-                  type="button"
-                  aria-label="Voice input"
-                  className="inline-flex items-center justify-center h-8 w-8 rounded-md text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
-                >
-                  🎤
-                </button>
+                <ImageUploader onSelect={onAttachImage} />
+                <VoiceInput onStart={onStartVoice} onStop={onStopVoice} />
               </div>
               <button
                 type="button"
