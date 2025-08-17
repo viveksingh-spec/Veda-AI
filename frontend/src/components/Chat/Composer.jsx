@@ -28,7 +28,14 @@ export default function Composer({ onSend, onAttachImage, onStartVoice, onStopVo
     <div className="sticky bottom-0 inset-x-0">
       <div className="px-4 sm:px-6">
         <div className="max-w-2xl mx-auto w-full pb-4 sm:pb-6">
-          <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm p-2">
+          <form
+            className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm p-2"
+           onSubmit={(e) => {
+              e.preventDefault();
+              console.log('Composer submit handler called');
+              submit();
+            }}
+          >
             <textarea
               ref={textareaRef}
               value={value}
@@ -44,14 +51,14 @@ export default function Composer({ onSend, onAttachImage, onStartVoice, onStopVo
                 <VoiceInput onStart={onStartVoice} onStop={onStopVoice} />
               </div>
               <button
-                type="button"
-                onClick={submit}
+                type="submit"
+                
                 className="inline-flex items-center gap-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3 py-1.5"
               >
                 Send
               </button>
             </div>
-          </div>
+          </form>
           <p className="text-center text-xs text-slate-500 dark:text-slate-400 mt-2">
             Veda can make mistakes. Consider checking important information.
           </p>
