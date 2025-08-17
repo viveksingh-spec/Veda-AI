@@ -10,7 +10,6 @@ import { createConversation, createMessage, listConversations } from '../service
 export default function ChatPage() {
   const [conversations, setConversations] = useState([]);
   const [activeConversationId, setActiveConversationId] = useState(null);
-  const [isTyping, setIsTyping] = useState(false);
   const [reloadToken, setReloadToken] = useState(0); // triggers message list refresh without remounting
 
   useEffect(() => {
@@ -42,20 +41,18 @@ export default function ChatPage() {
     if (!activeConversationId) return;
     await createMessage({ conversationId: activeConversationId, role: 'user', content: text });
     setReloadToken((n) => n + 1); // lightweight refresh
-    setIsTyping(true);
-    // mock assistant reply
-    setTimeout(async () => {
-      await createMessage({ conversationId: activeConversationId, role: 'assistant', content: `You said: ${text}` });
-      setIsTyping(false);
-      setReloadToken((n) => n + 1); // lightweight refresh
-    }, 700);
+    // streaming will be handled within ChatWindow; just refresh once user msg is created
   };
 
   return (
     <ChatLayout sidebarContent={sidebar}>
       <div className="flex-1 min-h-0 flex flex-col">
         <div className="flex-1 min-h-0 overflow-y-auto">
-          <ChatWindow conversationId={activeConversationId} reloadToken={reloadToken} isTyping={isTyping} />
+          <ChatWindow
+            conversationId={activeConversationId}
+            reloadToken={reloadToken}
+            onAssistantDone={() => setReloadToken((n) => n + 1)}
+          />
         </div>
         <div className="mt-2">
           <Composer
@@ -64,10 +61,8 @@ export default function ChatPage() {
               console.log('Selected image (mock):', file?.name);
             }}
             onStartVoice={() => {
-              setIsTyping(true);
               setTimeout(async () => {
                 const fakeTranscript = 'This is a mock voice transcription.';
-                setIsTyping(false);
                 await handleSend(fakeTranscript);
               }, 800);
             }}

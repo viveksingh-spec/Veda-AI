@@ -1,14 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import MessageBubble from './MessageBubble.jsx';
 import TypingIndicator from './TypingIndicator.jsx';
-import { listMessages } from '../../services/chatService.js';
+import { listMessages, createMessage } from '../../services/chatService.js';
+import useWebSocket from '../../hooks/useWebSocket.js';
 
-export default function ChatWindow({ conversationId, reloadToken, isTyping = false }) {
+export default function ChatWindow({ conversationId, reloadToken, onAssistantDone }) {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [draftAssistant, setDraftAssistant] = useState('');
+  const [streaming, setStreaming] = useState(false);
+  const [error, setError] = useState('');
   const scrollRef = useRef(null);
   const bottomAnchorRef = useRef(null);
   const lastConversationIdRef = useRef(null);
+  const ws = useWebSocket();
 
   useEffect(() => {
     let isCancelled = false;
@@ -41,7 +46,59 @@ export default function ChatWindow({ conversationId, reloadToken, isTyping = fal
     if (!el) return;
     // smooth scroll only when not first load
     el.scrollIntoView({ behavior: 'smooth', block: 'end' });
-  }, [messages, isTyping]);
+  }, [messages, streaming, draftAssistant]);
+
+  // Start mock streaming when the latest message is from user and no assistant follows
+  useEffect(() => {
+    if (!conversationId) return;
+    if (streaming) return;
+    if (!messages.length) return;
+    const last = messages[messages.length - 1];
+    if (last.role !== 'user') return;
+
+    // Begin streaming
+    setError('');
+    setDraftAssistant('');
+    setStreaming(true);
+
+    const offChunk = ws.onChunk((chunk) => {
+      setDraftAssistant((prev) => prev + chunk);
+    });
+    const offDone = ws.onDone(async (finalText) => {
+      try {
+        await createMessage({ conversationId, role: 'assistant', content: finalText });
+        setDraftAssistant('');
+        setStreaming(false);
+        onAssistantDone?.();
+      } catch (e) {
+        setError('Failed to finalize message.');
+        setStreaming(false);
+      } finally {
+        ws.disconnect();
+        offChunk();
+        offDone();
+        offError();
+      }
+    });
+    const offError = ws.onError((err) => {
+      console.error('Stream error:', err);
+      setError('Streaming error.');
+      setStreaming(false);
+      ws.disconnect();
+      offChunk();
+      offDone();
+      offError();
+    });
+
+    ws.connect('mock-access-token', conversationId);
+
+    return () => {
+      ws.disconnect();
+      offChunk?.();
+      offDone?.();
+      offError?.();
+    };
+  }, [conversationId, messages, streaming]);
 
   return (
     <div className="flex-1 min-h-0">
@@ -64,7 +121,13 @@ export default function ChatWindow({ conversationId, reloadToken, isTyping = fal
               </MessageBubble>
             ))
           )}
-          {isTyping ? <TypingIndicator /> : null}
+          {streaming ? <TypingIndicator /> : null}
+          {draftAssistant ? (
+            <MessageBubble role="assistant">{draftAssistant}</MessageBubble>
+          ) : null}
+          {error ? (
+            <div className="text-center text-xs text-red-500">{error}</div>
+          ) : null}
           <div ref={bottomAnchorRef} />
         </div>
       </div>
