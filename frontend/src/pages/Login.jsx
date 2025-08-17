@@ -30,9 +30,10 @@ export default function Login() {
       <div className="w-full max-w-md rounded-4xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow p-6">
         <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Login</h1>
         <form onSubmit={onSubmit} className="space-y-3" aria-label="Login form">
-          <label className="block">
+          <label className="block" htmlFor="login-email">
             <span className="block text-sm text-slate-700 dark:text-slate-300">Email</span>
             <input
+              id="login-email"
               type="email"
               required
               className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-slate-100"
@@ -40,9 +41,10 @@ export default function Login() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </label>
-          <label className="block">
+          <label className="block" htmlFor="login-password">
             <span className="block text-sm text-slate-700 dark:text-slate-300">Password</span>
             <input
+              id="login-password"
               type="password"
               required
               className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-slate-100"

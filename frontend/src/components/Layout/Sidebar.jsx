@@ -1,6 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function Sidebar({ open, onClose, children }) {
+  const panelRef = useRef(null);
+  const previouslyFocusedRef = useRef(null);
+
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === 'Escape') onClose?.();
@@ -8,6 +11,56 @@ export default function Sidebar({ open, onClose, children }) {
     if (open) window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [open, onClose]);
+
+  // Focus trap: keep tab focus inside the sidebar while open
+  useEffect(() => {
+    if (!open) return;
+    previouslyFocusedRef.current = document.activeElement;
+
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const getFocusable = () => Array.from(
+      panel.querySelectorAll(
+        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+      )
+    );
+
+    const focusables = getFocusable();
+    if (focusables.length > 0) {
+      focusables[0].focus();
+    } else {
+      panel.focus();
+    }
+
+    const handleKeyDown = (e) => {
+      if (e.key !== 'Tab') return;
+      const items = getFocusable();
+      if (items.length === 0) {
+        e.preventDefault();
+        return;
+      }
+      const first = items[0];
+      const last = items[items.length - 1];
+      const isShift = e.shiftKey;
+      const active = document.activeElement;
+      if (!isShift && active === last) {
+        e.preventDefault();
+        first.focus();
+      } else if (isShift && active === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    };
+
+    panel.addEventListener('keydown', handleKeyDown);
+    return () => {
+      panel.removeEventListener('keydown', handleKeyDown);
+      if (previouslyFocusedRef.current && previouslyFocusedRef.current.focus) {
+        previouslyFocusedRef.current.focus();
+      }
+    };
+  }, [open]);
 
   return (
     <>
@@ -20,8 +73,11 @@ export default function Sidebar({ open, onClose, children }) {
 
       {/* Sidebar panel */}
       <aside
-        className={`sm:static fixed inset-y-0 left-0 z-40 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform sm:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}
-        aria-label="Sidebar"
+        className={`sm:static fixed inset-y-0 left-0 z-40 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform duration-200 ease-out sm:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}
+        aria-label="Conversation navigation"
+        role="navigation"
+        ref={panelRef}
+        tabIndex={-1}
       >
         <div className="h-14 sm:hidden flex items-center px-3 border-b border-slate-200 dark:border-slate-800">
           <button

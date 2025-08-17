@@ -81,7 +81,6 @@ export default function ChatWindow({ conversationId, reloadToken, onAssistantDon
       }
     });
     const offError = ws.onError((err) => {
-      console.error('Stream error:', err);
       setError('Streaming error.');
       setStreaming(false);
       ws.disconnect();
@@ -101,7 +100,7 @@ export default function ChatWindow({ conversationId, reloadToken, onAssistantDon
   }, [conversationId, messages, streaming]);
 
   return (
-    <div className="flex-1 min-h-0">
+    <div className="flex-1 min-h-0" role="main" aria-label="Chat conversation">
       <div ref={scrollRef} className="h-full overflow-y-auto px-4 sm:px-6">
         <div className="max-w-2xl mx-auto w-full py-6 sm:py-8 space-y-4">
           {!conversationId ? (

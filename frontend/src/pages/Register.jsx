@@ -31,9 +31,10 @@ export default function Register() {
       <div className="w-full max-w-md rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow p-6 mx-auto">
         <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Create account</h1>
         <form onSubmit={onSubmit} className="space-y-3" aria-label="Register form">
-          <label className="block">
+          <label className="block" htmlFor="register-name">
             <span className="block text-sm text-slate-700 dark:text-slate-300">Name</span>
             <input
+              id="register-name"
               type="text"
               required
               className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-slate-100"
@@ -41,9 +42,10 @@ export default function Register() {
               onChange={(e) => setName(e.target.value)}
             />
           </label>
-          <label className="block">
+          <label className="block" htmlFor="register-email">
             <span className="block text-sm text-slate-700 dark:text-slate-300">Email</span>
             <input
+              id="register-email"
               type="email"
               required
               className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-slate-100"
@@ -51,9 +53,10 @@ export default function Register() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </label>
-          <label className="block">
+          <label className="block" htmlFor="register-password">
             <span className="block text-sm text-slate-700 dark:text-slate-300">Password</span>
             <input
+              id="register-password"
               type="password"
               required
               className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-slate-100"
