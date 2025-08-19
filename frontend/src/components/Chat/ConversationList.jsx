@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import uiStore from '../../stores/uiStore.js';
 
 export default function ConversationList({
   conversations = [],
@@ -27,7 +28,10 @@ export default function ConversationList({
             items.map((c) => (
               <button
                 key={c.id}
-                onClick={() => onSelect?.(c.id)}
+                onClick={() => {
+                  uiStore.setActiveConversation(c.id);
+                  onSelect?.(c.id);
+                }}
                 className={`w-full text-left px-3 py-2 rounded-md hover:bg-slate-50 dark:hover:bg-slate-800 outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 transition-colors ${
                   c.id === activeId
                     ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100'

@@ -5,22 +5,26 @@ import Composer from '../components/Chat/Composer.jsx';
 import ConversationList from '../components/Chat/ConversationList.jsx';
 import ChatLayout from '../components/Chat/ChatLayout.jsx';
 import { createConversation, createMessage, listConversations } from '../services/chatService.js';
+import uiStore from '../stores/uiStore.js';
 
 
 export default function ChatPage() {
   const [conversations, setConversations] = useState([]);
-  const [activeConversationId, setActiveConversationId] = useState(null);
+  const [activeConversationId, setActiveConversationId] = useState(uiStore.getState().activeConversationId);
   const [reloadToken, setReloadToken] = useState(0); // triggers message list refresh without remounting
 
   useEffect(() => {
     async function load() {
       const list = await listConversations();
       setConversations(list);
-      if (list.length && !activeConversationId) {
+      if (list.length && !uiStore.getState().activeConversationId) {
+        uiStore.setActiveConversation(list[0].id);
         setActiveConversationId(list[0].id);
       }
     }
     load();
+    const unsub = uiStore.subscribe((s) => setActiveConversationId(s.activeConversationId));
+    return () => unsub?.();
   }, []);
 
   const sidebar = useMemo(() => (

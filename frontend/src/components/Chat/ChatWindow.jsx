@@ -61,10 +61,14 @@ export default function ChatWindow({ conversationId, reloadToken, onAssistantDon
     setDraftAssistant('');
     setStreaming(true);
 
-    const offChunk = ws.onChunk((chunk) => {
+    let unsubChunk = () => {};
+    let unsubDone = () => {};
+    let unsubError = () => {};
+
+    unsubChunk = ws.onChunk((chunk) => {
       setDraftAssistant((prev) => prev + chunk);
     });
-    const offDone = ws.onDone(async (finalText) => {
+    unsubDone = ws.onDone(async (finalText) => {
       try {
         await createMessage({ conversationId, role: 'assistant', content: finalText });
         setDraftAssistant('');
@@ -75,27 +79,27 @@ export default function ChatWindow({ conversationId, reloadToken, onAssistantDon
         setStreaming(false);
       } finally {
         ws.disconnect();
-        offChunk();
-        offDone();
-        offError();
+        unsubChunk?.();
+        unsubDone?.();
+        unsubError?.();
       }
     });
-    const offError = ws.onError((err) => {
+    unsubError = ws.onError((err) => {
       setError('Streaming error.');
       setStreaming(false);
       ws.disconnect();
-      offChunk();
-      offDone();
-      offError();
+      unsubChunk?.();
+      unsubDone?.();
+      unsubError?.();
     });
 
     ws.connect('mock-access-token', conversationId);
 
     return () => {
       ws.disconnect();
-      offChunk?.();
-      offDone?.();
-      offError?.();
+      unsubChunk?.();
+      unsubDone?.();
+      unsubError?.();
     };
   }, [conversationId, messages, streaming]);
 

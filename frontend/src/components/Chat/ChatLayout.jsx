@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Topbar from '../Layout/Topbar.jsx';
 import Sidebar from '../Layout/Sidebar.jsx';
 import { Outlet } from 'react-router-dom';
+import uiStore from '../../stores/uiStore.js';
 
 export default function ChatLayout({ sidebarContent, children }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(uiStore.getState().sidebarOpen);
 
-  const openSidebar = () => setIsSidebarOpen(true);
-  const closeSidebar = () => setIsSidebarOpen(false);
-  const toggleSidebar = () => setIsSidebarOpen((v) => !v);
+  useEffect(() => {
+    const unsub = uiStore.subscribe((s) => setSidebarOpen(s.sidebarOpen));
+    return unsub;
+  }, []);
 
   return (
 
@@ -18,7 +20,7 @@ export default function ChatLayout({ sidebarContent, children }) {
       
       {/* Top bar (make it frosted too) */}
       <div className="backdrop-blur-md bg-white/30 dark:bg-slate-900/30 border-b border-white/20 dark:border-slate-700/30">
-          <Topbar onMenuClick={toggleSidebar} />
+          <Topbar onMenuClick={() => uiStore.toggleSidebar()} />
     </div>
 
 
@@ -27,7 +29,7 @@ export default function ChatLayout({ sidebarContent, children }) {
           
       {/* Sidebar with frosted glass effect */}
         <div className="backdrop-blur-md bg-white/40 dark:bg-slate-800/30 border-r border-white/20 dark:border-slate-700/30 overflow-y-auto h-full">
-           <Sidebar open={isSidebarOpen} onClose={closeSidebar}>{sidebarContent}</Sidebar>
+           <Sidebar open={sidebarOpen} onClose={() => uiStore.closeSidebar()}>{sidebarContent}</Sidebar>
     </div> 
 
 
@@ -47,7 +49,7 @@ export default function ChatLayout({ sidebarContent, children }) {
   bg-white/70 dark:bg-slate-800/70 
   backdrop-blur-md hover:bg-white/80 dark:hover:bg-slate-700/70 
   px-3 py-1.5 text-sm text-slate-700 dark:text-slate-200 shadow-sm"
-                onClick={toggleSidebar}
+                onClick={() => uiStore.toggleSidebar()}
               >
                 <span className="text-base">≡</span>
                 <span>Toggle sidebar</span>
