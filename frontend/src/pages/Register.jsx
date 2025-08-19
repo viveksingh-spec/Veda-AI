@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useAuth from '../hooks/useAuth.js';
-// import AuthLayout from '../components/Layout/AuthLayout1.jsx';
+import AuthLayout from '../components/Layout/AuthLayout.jsx';
 
 export default function Register() {
   const { register } = useAuth();
@@ -26,9 +26,8 @@ export default function Register() {
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   return (
-    //  <AuthLayout>
-      <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-b from-indigo-50 via-white to-white dark:from-slate-900 dark:via-slate-950 dark:to-black px-6">
-      <div className="w-full max-w-md rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow p-6 mx-auto">
+    <AuthLayout>
+      <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow p-6">
         <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Create account</h1>
         <form onSubmit={onSubmit} className="space-y-3" aria-label="Register form">
           <label className="block" htmlFor="register-name">
@@ -86,8 +85,7 @@ export default function Register() {
           <a href="/login" className="text-indigo-600 hover:underline text-sm">Already have an account? Login</a>
         </div>
       </div>
-    </div>
-    //  </AuthLayout>
+    </AuthLayout>
 
     
   );

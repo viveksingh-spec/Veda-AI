@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useAuth from '../hooks/useAuth.js';
-// import AuthLayout from '../components/Layout/AuthLayout1.jsx';
+import AuthLayout from '../components/Layout/AuthLayout.jsx';
 
 export default function Login() {
   const { login } = useAuth();
@@ -25,9 +25,8 @@ export default function Login() {
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   return (
-    // <AuthLayout>
-<div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-indigo-50 via-white to-white dark:from-slate-900 dark:via-slate-950 dark:to-black px-6">
-      <div className="w-full max-w-md rounded-4xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow p-6">
+    <AuthLayout>
+      <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow p-6">
         <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Login</h1>
         <form onSubmit={onSubmit} className="space-y-3" aria-label="Login form">
           <label className="block" htmlFor="login-email">
@@ -74,9 +73,7 @@ export default function Login() {
           <a href="/register" className="text-indigo-600 hover:underline text-sm">Don't have an account? Register</a>
         </div>
       </div>
-    </div>
-    
-    // </AuthLayout>
+    </AuthLayout>
 
   );
 }
