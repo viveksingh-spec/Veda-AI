@@ -119,7 +119,7 @@ export default function ChatWindow({ conversationId, reloadToken, onAssistantDon
             </div>
           ) : (
             messages.map((m) => (
-              <MessageBubble key={m.id} role={m.role}>
+              <MessageBubble key={m.id} role={m.role} createdAt={m.createdAt}>
                 {m.content}
               </MessageBubble>
             ))

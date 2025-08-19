@@ -1,6 +1,7 @@
 import HealthcareDisclaimer from '../HealthcareDisclaimer.jsx';
+import formatDate from '../../utils/formatDate.js';
 
-export default function MessageBubble({ role = 'assistant', children }) {
+export default function MessageBubble({ role = 'assistant', children, createdAt }) {
   const isUser = role === 'user';
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`} role="article" aria-label={isUser ? 'User message' : 'Assistant message'}>
@@ -12,6 +13,11 @@ export default function MessageBubble({ role = 'assistant', children }) {
         }`}
       >
         <div className="whitespace-pre-wrap break-words">{children}</div>
+        {createdAt && (
+          <div className="text-xs text-slate-400 dark:text-slate-500 mt-1 text-right select-none">
+            {formatDate(createdAt)}
+          </div>
+        )}
         {!isUser ? <HealthcareDisclaimer /> : null}
       </div>
     </div>
